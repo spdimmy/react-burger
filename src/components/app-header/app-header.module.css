@@ -1,3 +1,38 @@
 .header {
+  background-color: var(--background);
+}
 
+.header__menu {
+  display: flex;
+}
+
+.header__logo svg {
+  display: block;
+}
+
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+  padding-right: 20px;
+  color: var(--text-inactive-color);
+  text-decoration: none;
+}
+
+.button svg {
+  margin-right: 10px;
+}
+
+.button.active {
+  color: #F2F2F3;
+}
+
+.button.active svg {
+  fill: #F2F2F3;
 }
