@@ -9,13 +9,13 @@ class Ingredient extends React.Component {
         <Counter count={this.props.counter} size="small" />
         <img
           src={this.props.image}
-          alt={`картинка для ${this.props.description}`}
+          alt={`картинка для ${this.props.name}`}
           className={"mb-1"} />
         <div className={`mb-1 ${style.price}`}>
           <span className={"text text_type_digits-default mr-1"}>{this.props.price}</span>
           <CurrencyIcon type="primary" />
         </div>
-        <p>{this.props.description}</p>
+        <p>{this.props.name}</p>
       </div>
     )
   }

@@ -9,7 +9,7 @@ class IngredientsSection extends React.Component {
         <h2 className={`text text_type_main-medium mb-3`}>{this.props.title}</h2>
         <div className={styles.section}>
           {this.props.items.map(item => (
-            <Ingredient counter={1} image={item.image} price={item.price} description={item.name} key={item._id} />
+            <Ingredient {...item} counter={1} key={item._id} />
           ))}
         </div>
       </div>
