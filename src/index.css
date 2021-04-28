@@ -1,3 +1,9 @@
+html,
+body,
+#root {
+  height: 100%;
+}
+
 body {
   font-family: 'Jet Brains Mono', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -9,12 +15,24 @@ ul, ol {
   padding: 0;
 }
 
+p {
+  margin-top: 0;
+}
+
 li {
   list-style: none;
 }
 
 * {
   box-sizing: border-box;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 0;
+}
+
+h1 {
+  margin-bottom: 20px;
 }
 
 .container {

@@ -8,8 +8,11 @@ function App() {
   return (
     <div className={styles.app}>
       <AppHeader />
-      <BurgerIngredients />
-      <BurgerConstructor />
+      <main className={`container ${styles.main}`}>
+        <h1 className={`text text_type_main-large ${styles.title}`}>Соберите бургер</h1>
+        <BurgerIngredients />
+        <BurgerConstructor />
+      </main>
     </div>
   );
 }

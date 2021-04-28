@@ -1,3 +1,20 @@
 .app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
 
+.main {
+  flex-grow: 1;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: max-content;
+  grid-gap: 20px 40px;
+  padding-top: 40px;
+  overflow: hidden;
+}
+
+.title {
+  grid-column: 1 / -1;
+  margin-bottom: 20px;
 }
