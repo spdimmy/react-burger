@@ -2,7 +2,6 @@ import React from "react";
 import styles from  './burger-ingredients.module.css';
 import Tabs from "../tabs/tabs";
 import Ingredients from "../ingredients/ingredients";
-import data from "../../utils/data";
 
 class BurgerIngredients extends React.Component {
   render() {
@@ -25,7 +24,7 @@ class BurgerIngredients extends React.Component {
       }
     }
 
-    data.forEach(el => {
+    this.props.data.forEach(el => {
       let existingSection = sections.find(section => section.type === el.type);
 
       existingSection
