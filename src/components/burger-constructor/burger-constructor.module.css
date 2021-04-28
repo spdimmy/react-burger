@@ -25,36 +25,6 @@
   background: #8585AD;
 }
 
-.selected-item {
-  display: flex;
-  align-items: center;
-  padding-left: calc(var(--offset-base-size) * 2);
-  padding-right: calc(var(--offset-base-size) * 2);
-}
-
-.selected-list .selected-item {
-  padding-right: var(--offset-base-size);
-}
-
-/*@TODO remove when UI lib will be fixed*/
-.selected-item > *:last-child {
-  flex-grow: 1;
-}
-
-.selected-item:not(:last-child) {
-  margin-bottom: calc(var(--offset-base-size) * 2);
-}
-
-.drag {
-  cursor: grab;
-  margin-right: var(--offset-base-size);
-}
-
-.drag_hidden {
-  visibility: hidden;
-  opacity: 0;
-}
-
 .footer {
   display: flex;
   align-items: center;

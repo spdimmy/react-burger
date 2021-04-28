@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from  './burger-constructor.module.css';
-import {Button, ConstructorElement, CurrencyIcon, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
+import {Button, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
+import SelectedItem from "../selected-item/selected-item";
 
 class BurgerConstructor extends React.Component {
   render() {
@@ -12,28 +13,13 @@ class BurgerConstructor extends React.Component {
     return (
       <section className={styles.section}>
         <div className={`mb-5 ${styles['constructor-list']}`}>
-          <div className={styles['selected-item']}>
-            <div className={`${styles.drag} ${styles.drag_hidden}`}>
-              <DragIcon type="primary" />
-            </div>
-            <ConstructorElement price={bunIngredient.price} text={`${bunIngredient.name} (верх)`} thumbnail={bunIngredient.image_mobile} type={'top'} isLocked />
-          </div>
+          <SelectedItem dragHidden={true} price={bunIngredient.price} text={`${bunIngredient.name} (верх)`} thumbnail={bunIngredient.image_mobile} type={'top'} isLocked />
           <div className={`mb-2 ${styles['selected-list']}`}>
             {otherIngredients.map(ingredient => (
-              <div className={styles['selected-item']}>
-                <div className={styles.drag}>
-                  <DragIcon type="primary" />
-                </div>
-                <ConstructorElement price={ingredient.price} text={ingredient.name} thumbnail={ingredient.image_mobile} key={ingredient._id} />
-              </div>
+              <SelectedItem price={ingredient.price} text={`${ingredient.name}`} thumbnail={ingredient.image_mobile} key={ingredient._id} />
             ))}
           </div>
-          <div className={styles['selected-item']}>
-            <div className={`${styles.drag} ${styles.drag_hidden}`}>
-              <DragIcon type="primary" />
-            </div>
-            <ConstructorElement price={bunIngredient.price} text={`${bunIngredient.name} (низ)`} thumbnail={bunIngredient.image_mobile} type={'bottom'} isLocked />
-          </div>
+          <SelectedItem dragHidden={true} price={bunIngredient.price} text={`${bunIngredient.name} (низ)`} thumbnail={bunIngredient.image_mobile} type={'bottom'} isLocked />
         </div>
 
         <footer className={styles.footer}>
