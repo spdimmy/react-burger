@@ -16,6 +16,14 @@
   align-items: center;
 }
 
+.container > *:first-child {
+  margin-left: -20px;
+}
+
+.container > *:last-child {
+  margin-right: -20px;
+}
+
 .button {
   display: flex;
   align-items: center;
@@ -23,6 +31,7 @@
   padding-right: 20px;
   color: var(--text-inactive-color);
   text-decoration: none;
+  transition: var(--common-transition);
 }
 
 .button svg {

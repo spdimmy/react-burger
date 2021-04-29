@@ -10,9 +10,11 @@ function App() {
     <div className={styles.app}>
       <AppHeader />
       <main className={`container ${styles.main}`}>
-        <h1 className={`text text_type_main-large ${styles.title}`}>Соберите бургер</h1>
-        <BurgerIngredients data={data} />
-        <BurgerConstructor data={data} />
+        <h1 className={`text text_type_main-large mb-2`}>Соберите бургер</h1>
+        <div className={styles.cols}>
+          <BurgerIngredients data={data} />
+          <BurgerConstructor data={data} />
+        </div>
       </main>
     </div>
   );

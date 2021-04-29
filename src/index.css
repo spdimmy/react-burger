@@ -37,9 +37,8 @@ h1 {
 
 .container {
   width: 100%;
-  max-width: 1240px;
+  max-width: 1280px;
   margin-left: auto;
   margin-right: auto;
-  padding: 0 calc(var(--offset-base-size)  * 2);
-  box-sizing: content-box;
+  padding: 0 20px;
 }
