@@ -1,0 +1,47 @@
+.section {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 52px;
+  overflow: hidden;
+}
+
+.constructor-list {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.selected-list {
+  overflow: auto;
+}
+
+.selected-list::-webkit-scrollbar {
+  width: 8px;
+}
+.selected-list::-webkit-scrollbar-track {
+  background: #2F2F37;
+}
+.selected-list::-webkit-scrollbar-thumb {
+  background: #8585AD;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: calc(var(--offset-base-size) * 2);
+}
+
+.sum {
+  display: flex;
+  align-items: center;
+}
+
+.sum svg {
+  width: 36px;
+  height: 36px;
+}
+
+.value {
+  font-size: 48px;
+}

@@ -1,0 +1,11 @@
+.card {
+  position: relative;
+  text-align: center;
+  width: calc(50% - var(--offset-base-size) * 4);
+}
+
+.price {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
