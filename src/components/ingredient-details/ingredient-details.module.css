@@ -1,0 +1,6 @@
+.composition {
+  display: flex;
+  justify-content: center;
+  margin-left: calc((var(--offset-base-size) * 5) * -1);
+  margin-right: calc((var(--offset-base-size) * 5) * -1);
+}

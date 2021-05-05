@@ -5,11 +5,11 @@ import BurgerIngredients from "../burger-ingredients/burger-ingredients";
 import BurgerConstructor  from "../burger-constructor/burger-constructor";
 
 function App() {
-  const url = 'https://norma.nomoreparties.space/api/ingredients';
+  const endpoint = 'https://norma.nomoreparties.space/api/ingredients';
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetch(url)
+    fetch(endpoint)
       .then(res => res.json())
       .then(ingredients => setData(ingredients.data))
       .catch((error) => console.log(error));
