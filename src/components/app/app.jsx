@@ -10,7 +10,7 @@ function App() {
 
   useEffect(() => {
     fetch(endpoint)
-      .then(res => res.json())
+      .then(res => res.ok ? res.json() : Promise.reject(res))
       .then(ingredients => setData(ingredients.data))
       .catch((error) => console.log(error));
   }, []);
