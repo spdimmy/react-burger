@@ -1,16 +1,14 @@
 import React from "react";
 import IngredientsSection from "../ingredients-section/ingredients-section";
 
-class Ingredients extends React.Component {
-  render() {
-    return (
-      <>
-        {this.props.sections.map((section, i) => (
-          <IngredientsSection title={section.title} items={section.items} key={`section-${i}`} />
-        ))}
-      </>
-    )
-  }
+function Ingredients({sections, openModal}) {
+  return (
+    <>
+      {sections.map((section, i) => (
+        <IngredientsSection title={section.title} items={section.items} key={`section-${i}`} openModal={openModal} />
+      ))}
+    </>
+  )
 }
 
 export default Ingredients;
