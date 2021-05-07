@@ -1,11 +1,11 @@
 import React from "react";
 import IngredientsSection from "../ingredients-section/ingredients-section";
 
-function Ingredients(props) {
+function Ingredients({sections, openModal}) {
   return (
     <>
-      {props.sections.map((section, i) => (
-        <IngredientsSection title={section.title} items={section.items} key={`section-${i}`} />
+      {sections.map((section, i) => (
+        <IngredientsSection title={section.title} items={section.items} key={`section-${i}`} openModal={openModal} />
       ))}
     </>
   )

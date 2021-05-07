@@ -1,31 +1,23 @@
-import {React, useState} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styles from  './burger-constructor.module.css';
 import {Button, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import SelectedItem from "../selected-item/selected-item";
-import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 
-function BurgerConstructor({data}) {
-  const [isModalOpen, setModalOpen] = useState(false);
+function BurgerConstructor({data, openModal}) {
   const ingredients = data;
   const bunIngredient = ingredients.find(item => item.type === "bun");
   const sumPrice = ingredients.reduce((acc, curr) => acc + curr.price, 0);
   const otherIngredients = ingredients.filter(item => item.type !== "bun");
 
-  const openModal = () => {
-    setModalOpen(true);
+  const openModalWithContent = () => {
+    openModal({
+      isOpen: true,
+      header: '',
+      content: <OrderDetails />,
+    })
   };
-
-  const closeModal = () => {
-    setModalOpen(false);
-  };
-
-  const modal = (
-    <Modal onClose={closeModal}>
-      <OrderDetails />
-    </Modal>
-  );
 
   return (
     <>
@@ -45,10 +37,9 @@ function BurgerConstructor({data}) {
             <span className={`text text_type_digits-default mr-1 ${styles.value}`}>{sumPrice}</span>
             <CurrencyIcon type="primary" />
           </div>
-          <Button type="primary" size="large" onClick={openModal}>Оформить заказ</Button>
+          <Button type="primary" size="large" onClick={openModalWithContent}>Оформить заказ</Button>
         </footer>
       </section>
-      {isModalOpen && modal}
     </>
   )
 }

@@ -4,7 +4,7 @@ import styles from  './burger-ingredients.module.css';
 import Tabs from "../tabs/tabs";
 import Ingredients from "../ingredients/ingredients";
 
-function BurgerIngredients({data}) {
+function BurgerIngredients({data, openModal}) {
   const BUN = "bun";
   const MAIN = "main";
   const SAUCE = "sauce";
@@ -44,7 +44,7 @@ function BurgerIngredients({data}) {
         <Tabs tabs={tabs} />
       </div>
       <div className={styles.items}>
-        <Ingredients sections={sections} />
+        <Ingredients sections={sections} openModal={openModal} />
       </div>
     </section>
   )
