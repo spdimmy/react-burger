@@ -18,7 +18,7 @@ function Ingredient(props) {
     });
 
     ingredientsDispatcher({
-      type: 'update',
+      type: 'add',
       id: props._id,
     });
   };

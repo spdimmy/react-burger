@@ -31,44 +31,46 @@ function modalReducer(state, action) {
 
 function ingredientsReducer(state, action) {
   switch (action.type) {
-    case 'add':
+    case 'load':
       return action.payload;
-    case 'update':
+    case 'add':
+      const currentItem = state.find(ingredient => ingredient._id === action.id);
+
       // Update state of item and count
       return state.map(ingredient => {
-        // Find clicked item
-        if (ingredient._id === action.id) {
-          // Check if it's a bun
-          if (ingredient.type === 'bun') {
-            // Try to find prev bun
-            const prevBun = state.find(ingredient => ingredient.type === 'bun' && ingredient.active);
-            // If exist remove count and state, only one bun could be active at once
-            if (prevBun) {
-              prevBun.active = false;
-              prevBun.count = 0;
-            }
-            // Set active bun
-            ingredient.count = 2;
-            ingredient.active = true;
-          } else {
-            // Process other items
-            ingredient.active = true;
-            ingredient.count += 1;
+        if (ingredient.type === 'bun' &&
+            currentItem.type === 'bun' &&
+            ingredient._id !== action.id &&
+            ingredient.active
+        ) {
+          return {
+            ...ingredient,
+            active: false,
+            count: 0
           }
         }
 
-        return ingredient;
-      });
-    case 'remove':
-      return state.map(ingredient => {
         // Find clicked item
         if (ingredient._id === action.id) {
-          ingredient.active = false;
-          ingredient.count = 0;
+          // Check if it's a bun
+          return ingredient.type === 'bun'
+            ? {
+              ...ingredient,
+              active: true,
+              count: 2
+            } : {
+              ...ingredient,
+              active: true,
+              count: ingredient.count + 1
+            }
+        } else {
+          return ingredient;
         }
-
-        return ingredient;
       });
+    case 'remove':
+      return state.map(ingredient =>
+        ingredient._id === action.id ? {...ingredient, active: false, count: 0} : ingredient
+      );
     default:
       throw new Error(`Wrong type of action: ${action.type}`);
   }
@@ -88,15 +90,14 @@ function App() {
       };
 
       fetchData().then(ingredients => {
-        const updatedIngredients = ingredients.data.map(ingredient => {
-          ingredient.active = false;
-          ingredient.count = 0;
-
-          return ingredient;
-        });
+        const updatedIngredients = ingredients.data.map(ingredient => ({
+          ...ingredient,
+          active: false,
+          count: 0
+        }));
 
         ingredientsDispatcher({
-          type: 'add',
+          type: 'load',
           payload: updatedIngredients
         })
       });
