@@ -20,6 +20,7 @@ function Ingredient(props) {
     ingredientsDispatcher({
       type: 'add',
       id: props._id,
+      productType: props.type
     });
   };
 

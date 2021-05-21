@@ -34,12 +34,10 @@ function ingredientsReducer(state, action) {
     case 'load':
       return action.payload;
     case 'add':
-      const currentItem = state.find(ingredient => ingredient._id === action.id);
-
-      // Update state of item and count
       return state.map(ingredient => {
+        // Try to find prev active bun to erase
         if (ingredient.type === 'bun' &&
-            currentItem.type === 'bun' &&
+            action.productType === 'bun' &&
             ingredient._id !== action.id &&
             ingredient.active
         ) {
@@ -50,19 +48,13 @@ function ingredientsReducer(state, action) {
           }
         }
 
-        // Find clicked item
+        // Look for clicked item
         if (ingredient._id === action.id) {
-          // Check if it's a bun
-          return ingredient.type === 'bun'
-            ? {
-              ...ingredient,
-              active: true,
-              count: 2
-            } : {
-              ...ingredient,
-              active: true,
-              count: ingredient.count + 1
-            }
+          return {
+            ...ingredient,
+            active: true,
+            count: ingredient.type === 'bun' ? 2 : ingredient.count + 1
+          }
         } else {
           return ingredient;
         }
