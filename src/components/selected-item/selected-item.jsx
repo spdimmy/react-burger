@@ -9,7 +9,8 @@ function SelectedItem(props) {
   const handleClose = () => {
     ingredientsDispatcher({
       type: 'remove',
-      id: props.id
+      id: props.id,
+      activeId: props.activeId
     });
   };
 

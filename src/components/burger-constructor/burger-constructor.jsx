@@ -10,13 +10,13 @@ import { endpointOrders } from '../../utils/constants';
 function BurgerConstructor() {
   const {ingredients} = useContext(IngredientsContext);
   const {modalDispatcher} = useContext(ModalContext);
-  const bunIngredient = ingredients.find(item => item.type === "bun" && item.active);
-  const otherIngredients = ingredients.filter(item => item.type !== "bun" && item.active);
-  const sumPrice = ingredients.reduce((acc, curr) => curr.active ? acc + curr.price * curr.count : acc, 0);
+  const activeIngredients = ingredients.active;
+  const bunIngredient = activeIngredients.find(item => item.type === "bun");
+  const otherIngredients = activeIngredients.filter(item => item.type !== "bun");
+  const sumPrice = activeIngredients.reduce((acc, curr) => acc + curr.price * curr.count, 0);
 
   const openModalWithContent = async () => {
-    const activeIngredients = [];
-    ingredients.forEach(ingredient => ingredient.active && activeIngredients.push(ingredient._id));
+    const activeIngredientsIds = activeIngredients.map(ingredient => ingredient._id);
 
     // Prevent submit order without order
     if (!bunIngredient) return false;
@@ -28,7 +28,7 @@ function BurgerConstructor() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          ingredients: activeIngredients
+          ingredients: activeIngredientsIds
         }),
       });
 
@@ -58,7 +58,7 @@ function BurgerConstructor() {
 
           <div className={`mb-2 ${styles['selected-list']}`}>
             {otherIngredients.map(ingredient => (
-              <SelectedItem price={ingredient.count * ingredient.price} text={`${ingredient.name}`} thumbnail={ingredient.image_mobile} key={ingredient._id} id={ingredient._id} />
+              <SelectedItem price={ingredient.price} text={ingredient.name} thumbnail={ingredient.image_mobile} key={ingredient.activeId} activeId={ingredient.activeId} id={ingredient._id} />
             ))}
           </div>
 

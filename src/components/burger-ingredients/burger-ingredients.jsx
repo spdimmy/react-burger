@@ -25,7 +25,7 @@ function BurgerIngredients() {
     }
   }
 
-  ingredients.forEach(el => {
+  ingredients.data.forEach(el => {
     let existingSection = sections.find(section => section.type === el.type);
 
     existingSection

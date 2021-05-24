@@ -7,11 +7,17 @@ import Modal from "../modal/modal";
 import {endpointIngredients} from '../../utils/constants';
 import {ModalContext} from  '../../services/modalContext';
 import {IngredientsContext} from  '../../services/ingredientsContext';
+import { v4 as uuidv4 } from 'uuid';
 
 const modalInitialState = {
   isOpen: false,
   header: '',
   content: null,
+};
+
+const ingredientsInitialState = {
+  data: [],
+  active: []
 };
 
 function modalReducer(state, action) {
@@ -30,20 +36,23 @@ function modalReducer(state, action) {
 }
 
 function ingredientsReducer(state, action) {
+  let newState;
+
   switch (action.type) {
     case 'load':
-      return action.payload;
+      return {
+        data: action.payload,
+        active: []
+      };
     case 'add':
-      return state.map(ingredient => {
+      newState = state.data.map(ingredient => {
         // Try to find prev active bun to erase
         if (ingredient.type === 'bun' &&
-            action.productType === 'bun' &&
-            ingredient._id !== action.id &&
-            ingredient.active
+          action.productType === 'bun' &&
+          ingredient._id !== action.id
         ) {
           return {
             ...ingredient,
-            active: false,
             count: 0
           }
         }
@@ -52,31 +61,49 @@ function ingredientsReducer(state, action) {
         if (ingredient._id === action.id) {
           return {
             ...ingredient,
-            active: true,
             count: ingredient.type === 'bun' ? 2 : ingredient.count + 1
           }
         } else {
-          return ingredient;
+          return ingredient
         }
       });
+
+      const prevActiveUpdated = action.productType === 'bun'
+        ? state.active.filter(el => el.type !== 'bun')
+        : state.active;
+
+      const newActive = {
+        ...state.data.find(ingredient => ingredient._id === action.id),
+        activeId: uuidv4(),
+      };
+
+      return {
+        data: newState,
+        active: [
+          ...prevActiveUpdated,
+          newActive
+        ]
+      };
     case 'remove':
-      return state.map(ingredient =>
-        ingredient._id === action.id ? {...ingredient, active: false, count: 0} : ingredient
-      );
+      newState = state.data.map(ingredient => ingredient._id === action.id ? {...ingredient, count: ingredient.count - 1} : ingredient);
+
+      return {
+        data: newState,
+        active: state.active.filter(ingredient => ingredient.activeId !== action.activeId)
+      };
     default:
       throw new Error(`Wrong type of action: ${action.type}`);
   }
 }
 
 function App() {
-  const endpoint = endpointIngredients;
   const [currentModal, modalDispatcher] = useReducer(modalReducer, modalInitialState, undefined);
-  const [ingredients, ingredientsDispatcher] = useReducer(ingredientsReducer, [], undefined);
+  const [ingredients, ingredientsDispatcher] = useReducer(ingredientsReducer, ingredientsInitialState, undefined);
 
   useEffect(() => {
     try {
       const fetchData = async () => {
-        const response = await fetch(endpoint);
+        const response = await fetch(endpointIngredients);
         if (!response.ok) { throw new Error('Ответ сети был не ok') }
         return await response.json();
       };
@@ -96,7 +123,7 @@ function App() {
     } catch (error) {
       throw new Error(error);
     }
-  }, [endpoint]);
+  }, []);
 
   return (
     <>
