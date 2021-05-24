@@ -44,7 +44,7 @@ function BurgerConstructor() {
         content: <OrderDetails order={data.order.number} />,
       })
     } catch(error) {
-      throw new Error(error);
+      console.log(error);
     }
   };
 

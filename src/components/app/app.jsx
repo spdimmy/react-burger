@@ -31,7 +31,7 @@ function modalReducer(state, action) {
     case 'close':
       return modalInitialState;
     default:
-      throw new Error(`Wrong type of action: ${action.type}`);
+      console.log(`Wrong type of action: ${action.type}`)
   }
 }
 
