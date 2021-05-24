@@ -13,7 +13,7 @@ function BurgerConstructor() {
   const activeIngredients = ingredients.active;
   const bunIngredient = activeIngredients.find(item => item.type === "bun");
   const otherIngredients = activeIngredients.filter(item => item.type !== "bun");
-  const sumPrice = activeIngredients.reduce((acc, curr) => acc + curr.price * curr.count, 0);
+  const sumPrice = activeIngredients.reduce((acc, curr) => curr.type === "bun" ? acc + curr.price * 2 : acc + curr.price, 0);
 
   const openModalWithContent = async () => {
     const activeIngredientsIds = activeIngredients.map(ingredient => ingredient._id);
