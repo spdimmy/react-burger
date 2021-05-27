@@ -1,11 +1,14 @@
-import React, {useContext} from "react";
+import React, {useEffect} from "react";
 import styles from  './burger-ingredients.module.css';
 import Tabs from "../tabs/tabs";
 import Ingredients from "../ingredients/ingredients";
-import { IngredientsContext } from  '../../services/ingredientsContext';
+import { getIngredients } from  '../../services/actions/burger';
+import { useDispatch, useSelector } from "react-redux";
 
 function BurgerIngredients() {
-  const {ingredients} = useContext(IngredientsContext);
+  const {ingredients, ingredientsRequest} = useSelector(store => store.ingredients);
+  const dispatch = useDispatch();
+
   const BUN = "bun";
   const MAIN = "main";
   const SAUCE = "sauce";
@@ -25,7 +28,11 @@ function BurgerIngredients() {
     }
   }
 
-  ingredients.data.forEach(el => {
+  useEffect(() => {
+    dispatch(getIngredients());
+  }, [dispatch]);
+
+  ingredients.forEach(el => {
     let existingSection = sections.find(section => section.type === el.type);
 
     existingSection
@@ -45,7 +52,10 @@ function BurgerIngredients() {
         <Tabs tabs={tabs} />
       </div>
       <div className={styles.items}>
-        <Ingredients sections={sections} />
+        {ingredientsRequest
+          ? 'Loading'
+          : <Ingredients sections={sections} />
+        }
       </div>
     </section>
   )

@@ -1,17 +1,18 @@
-import React, {useContext} from 'react';
+import React from 'react';
+import { useDispatch } from "react-redux";
 import styles from "./selected-item.module.css";
 import {ConstructorElement, DragIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {IngredientsContext} from "../../services/ingredientsContext";
+import {REMOVE_INGREDIENT} from "../../services/actions/burger";
 
 function SelectedItem(props) {
-  const {ingredientsDispatcher} = useContext(IngredientsContext);
+  const dispatch = useDispatch();
 
   const handleClose = () => {
-    ingredientsDispatcher({
-      type: 'remove',
+    dispatch({
+      type: REMOVE_INGREDIENT,
       id: props.id,
       activeId: props.activeId
-    });
+    })
   };
 
   return (

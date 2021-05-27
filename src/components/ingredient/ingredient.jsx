@@ -1,24 +1,23 @@
-import React, {useContext} from "react";
+import React from "react";
+import { ADD_INGREDIENT, OPEN_MODAL } from '../../services/actions/burger';
+import { useDispatch } from "react-redux";
 import PropTypes from 'prop-types';
 import { Counter, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import style from './ingredient.module.css';
-import { ModalContext } from  '../../services/modalContext';
-import { IngredientsContext } from  '../../services/ingredientsContext';
 import IngredientDetails from "../ingredient-details/ingredient-details";
 
 function Ingredient(props) {
-  const {modalDispatcher} = useContext(ModalContext);
-  const {ingredientsDispatcher} = useContext(IngredientsContext);
+  const dispatch = useDispatch();
 
   const handleIngredientClick = () => {
-    modalDispatcher({
-      type: 'open',
+    dispatch({
+      type: OPEN_MODAL,
       header: 'Детали ингредиента',
       content: <IngredientDetails {...props} />,
     });
 
-    ingredientsDispatcher({
-      type: 'add',
+    dispatch({
+      type: ADD_INGREDIENT,
       id: props._id,
       productType: props.type
     });

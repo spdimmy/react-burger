@@ -1,51 +1,24 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import styles from  './burger-constructor.module.css';
 import {Button, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import SelectedItem from "../selected-item/selected-item";
-import OrderDetails from "../order-details/order-details";
-import { ModalContext } from  '../../services/modalContext';
-import { IngredientsContext } from  '../../services/ingredientsContext';
-import { endpointOrders } from '../../utils/constants';
+import {useDispatch, useSelector} from "react-redux";
+import { getOrder } from "../../services/actions/burger";
 
 function BurgerConstructor() {
-  const {ingredients} = useContext(IngredientsContext);
-  const {modalDispatcher} = useContext(ModalContext);
-  const activeIngredients = ingredients.active;
+  const dispatch = useDispatch();
+  const {activeIngredients} = useSelector(store => store.ingredients);
   const bunIngredient = activeIngredients.find(item => item.type === "bun");
   const otherIngredients = activeIngredients.filter(item => item.type !== "bun");
   const sumPrice = activeIngredients.reduce((acc, curr) => curr.type === "bun" ? acc + curr.price * 2 : acc + curr.price, 0);
 
-  const openModalWithContent = async () => {
+  const openModalWithContent = () => {
     const activeIngredientsIds = activeIngredients.map(ingredient => ingredient._id);
 
     // Prevent submit order without order
     if (!bunIngredient) return false;
 
-    try {
-      const response = await fetch(endpointOrders, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          ingredients: activeIngredientsIds
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Ответ сети был не ok');
-      }
-
-      const data = await response.json();
-
-      modalDispatcher({
-        type: 'open',
-        header: '',
-        content: <OrderDetails order={data.order.number} />,
-      })
-    } catch(error) {
-      console.log(error);
-    }
+    dispatch(getOrder(activeIngredientsIds));
   };
 
   return (
