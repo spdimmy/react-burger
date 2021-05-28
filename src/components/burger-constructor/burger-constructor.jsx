@@ -3,11 +3,26 @@ import styles from  './burger-constructor.module.css';
 import {Button, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import SelectedItem from "../selected-item/selected-item";
 import {useDispatch, useSelector} from "react-redux";
-import { getOrder } from "../../services/actions/burger";
+import {ADD_INGREDIENT, getOrder, OPEN_MODAL} from "../../services/actions/burger";
+import {useDrop} from "react-dnd";
 
 function BurgerConstructor() {
   const dispatch = useDispatch();
   const {activeIngredients} = useSelector(store => store.ingredients);
+  const [{isOver}, dropTarget] = useDrop({
+    accept: "all",
+    drop(obj) {
+      dispatch({
+        type: ADD_INGREDIENT,
+        id: obj.id,
+        productType: obj.type
+      });
+    },
+    collect: monitor => ({
+      isOver: monitor.isOver()
+    })
+  });
+
   const bunIngredient = activeIngredients.find(item => item.type === "bun");
   const otherIngredients = activeIngredients.filter(item => item.type !== "bun");
   const sumPrice = activeIngredients.reduce((acc, curr) => curr.type === "bun" ? acc + curr.price * 2 : acc + curr.price, 0);
@@ -16,15 +31,22 @@ function BurgerConstructor() {
     const activeIngredientsIds = activeIngredients.map(ingredient => ingredient._id);
 
     // Prevent submit order without order
-    if (!bunIngredient) return false;
-
-    dispatch(getOrder(activeIngredientsIds));
+    bunIngredient
+     ? dispatch(getOrder(activeIngredientsIds))
+     : dispatch({type: OPEN_MODAL, content: <h2>Хлеб - всему голова, выберите булочку</h2>});
   };
+
+  const wrapperClass = `
+    mb-5 
+    ${styles['constructor-list']} 
+    ${(!bunIngredient && !otherIngredients.length) ? styles['constructor-list-empty'] : ''} 
+    ${isOver ? styles['constructor-list-hover'] : ''}
+  `;
 
   return (
     <>
       <section className={styles.section}>
-        <div className={`mb-5 ${styles['constructor-list']}`}>
+        <div className={wrapperClass} ref={dropTarget}>
           {bunIngredient && (
             <SelectedItem dragHidden={true} price={bunIngredient?.price} text={`${bunIngredient?.name} (верх)`} thumbnail={bunIngredient?.image_mobile} type={'top'} isLocked />
           )}

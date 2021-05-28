@@ -7,9 +7,26 @@
 }
 
 .constructor-list {
+  flex-grow: 1;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+}
+
+.constructor-list-empty:before {
+  content: 'Перенесите сюда еду';
+  height: 100%;
+  background: var(--background);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3px dashed #8585ad;
+  font-size: 30px;
+  transition: background 0.25s ease-out;
+}
+
+.constructor-list-hover:before {
+  background: #27272d;
 }
 
 .selected-list {

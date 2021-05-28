@@ -8,7 +8,8 @@ import {
   GET_ORDER_SUCCESS,
   GET_ORDER_FAILED,
   OPEN_MODAL,
-  CLOSE_MODAL
+  CLOSE_MODAL,
+  UPDATE_CONSTRUCTOR_ORDER
 } from '../actions/burger';
 import {v4 as uuidv4} from "uuid";
 
@@ -104,6 +105,16 @@ export const ingredientsReducer = (state = ingredientsInitialState, action) => {
         ingredients: newState,
         activeIngredients: state.activeIngredients.filter(ingredient => ingredient.activeId !== action.activeId)
       };
+    }
+    case UPDATE_CONSTRUCTOR_ORDER: {
+      const activeIngredients = [...state.activeIngredients];
+
+      activeIngredients.splice(action.to, 0, activeIngredients.splice(action.from, 1)[0]);
+
+      return {
+        ...state,
+        activeIngredients
+      }
     }
     default: {
       return state;
