@@ -141,6 +141,7 @@ export const orderReducer = (state = orderInitialState, action) => {
     case GET_ORDER_FAILED: {
       return {
         ...state,
+        order: orderInitialState.order,
         orderFailed: true,
         orderRequest: false,
       };
