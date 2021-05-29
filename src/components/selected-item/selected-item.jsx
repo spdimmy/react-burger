@@ -58,7 +58,7 @@ function SelectedItem(props) {
   const opacity = isDrag ? 0 : 1;
 
   return (
-    <div ref={!props.isLocked ? ref : null} className={styles['selected-item']} style={{opacity}}>
+    <div {...(!props.isLocked && {ref: ref})} className={styles['selected-item']} style={{opacity}}>
       <div className={`${styles.drag} ${props.dragHidden && styles.drag_hidden}`}>
         <DragIcon type="primary" />
       </div>
