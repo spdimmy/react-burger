@@ -1,57 +1,52 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import styles from  './burger-constructor.module.css';
 import {Button, CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
 import SelectedItem from "../selected-item/selected-item";
-import OrderDetails from "../order-details/order-details";
-import { ModalContext } from  '../../services/modalContext';
-import { IngredientsContext } from  '../../services/ingredientsContext';
-import { endpointOrders } from '../../utils/constants';
+import {useDispatch, useSelector} from "react-redux";
+import {ADD_INGREDIENT, getOrder, OPEN_MODAL} from "../../services/actions/burger";
+import {useDrop} from "react-dnd";
 
 function BurgerConstructor() {
-  const {ingredients} = useContext(IngredientsContext);
-  const {modalDispatcher} = useContext(ModalContext);
-  const activeIngredients = ingredients.active;
+  const dispatch = useDispatch();
+  const {activeIngredients} = useSelector(store => store.ingredients);
+  const [{isOver}, dropTarget] = useDrop({
+    accept: "all",
+    drop(obj) {
+      dispatch({
+        type: ADD_INGREDIENT,
+        id: obj.id,
+        productType: obj.type
+      });
+    },
+    collect: monitor => ({
+      isOver: monitor.isOver()
+    })
+  });
+
   const bunIngredient = activeIngredients.find(item => item.type === "bun");
   const otherIngredients = activeIngredients.filter(item => item.type !== "bun");
   const sumPrice = activeIngredients.reduce((acc, curr) => curr.type === "bun" ? acc + curr.price * 2 : acc + curr.price, 0);
 
-  const openModalWithContent = async () => {
+  const openModalWithContent = () => {
     const activeIngredientsIds = activeIngredients.map(ingredient => ingredient._id);
 
     // Prevent submit order without order
-    if (!bunIngredient) return false;
-
-    try {
-      const response = await fetch(endpointOrders, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          ingredients: activeIngredientsIds
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error('Ответ сети был не ok');
-      }
-
-      const data = await response.json();
-
-      modalDispatcher({
-        type: 'open',
-        header: '',
-        content: <OrderDetails order={data.order.number} />,
-      })
-    } catch(error) {
-      console.log(error);
-    }
+    bunIngredient
+     ? dispatch(getOrder(activeIngredientsIds))
+     : dispatch({type: OPEN_MODAL, content: <h2>Хлеб - всему голова, выберите булочку</h2>});
   };
+
+  const wrapperClass = `
+    mb-5 
+    ${styles['constructor-list']} 
+    ${(!bunIngredient && !otherIngredients.length) ? styles['constructor-list-empty'] : ''} 
+    ${isOver ? styles['constructor-list-hover'] : ''}
+  `;
 
   return (
     <>
       <section className={styles.section}>
-        <div className={`mb-5 ${styles['constructor-list']}`}>
+        <div className={wrapperClass} ref={dropTarget}>
           {bunIngredient && (
             <SelectedItem dragHidden={true} price={bunIngredient?.price} text={`${bunIngredient?.name} (верх)`} thumbnail={bunIngredient?.image_mobile} type={'top'} isLocked />
           )}

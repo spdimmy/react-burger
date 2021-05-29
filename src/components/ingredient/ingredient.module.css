@@ -5,6 +5,11 @@
   cursor: pointer;
 }
 
+.cardActive {
+  composes: card;
+  background: rgba(255, 255, 255, 0.02);
+}
+
 .price {
   display: flex;
   justify-content: center;

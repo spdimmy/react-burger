@@ -1,32 +1,36 @@
-import React, {useContext} from "react";
+import React from "react";
+import { OPEN_MODAL } from '../../services/actions/burger';
+import { useDispatch } from "react-redux";
 import PropTypes from 'prop-types';
 import { Counter, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import style from './ingredient.module.css';
-import { ModalContext } from  '../../services/modalContext';
-import { IngredientsContext } from  '../../services/ingredientsContext';
 import IngredientDetails from "../ingredient-details/ingredient-details";
+import {useDrag} from "react-dnd";
 
 function Ingredient(props) {
-  const {modalDispatcher} = useContext(ModalContext);
-  const {ingredientsDispatcher} = useContext(IngredientsContext);
+  const dispatch = useDispatch();
+  const [{isDrag}, dragRef] = useDrag({
+    type: "all",
+    item: {
+      id: props._id,
+      type: props.type
+    },
+    collect: monitor => ({
+      isDrag: monitor.isDragging()
+    })
+  });
 
   const handleIngredientClick = () => {
-    modalDispatcher({
-      type: 'open',
+    dispatch({
+      type: OPEN_MODAL,
       header: 'Детали ингредиента',
       content: <IngredientDetails {...props} />,
-    });
-
-    ingredientsDispatcher({
-      type: 'add',
-      id: props._id,
-      productType: props.type
     });
   };
 
   return (
     <>
-      <div className={`ml-2 mr-2 mb-4 ${style.card}`} onClick={handleIngredientClick}>
+      <div className={`ml-2 mr-2 mb-4 ${isDrag ? style.cardActive : style.card}`} ref={dragRef} onClick={handleIngredientClick} draggable>
         {!!props.count && <Counter count={props.count} size="small" />}
         <img
           src={props.image}
