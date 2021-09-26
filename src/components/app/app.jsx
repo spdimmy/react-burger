@@ -1,12 +1,19 @@
 import React from 'react';
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import styles from './app.module.css';
 import AppHeader from "../app-header/app-header";
-import BurgerIngredients from "../burger-ingredients/burger-ingredients";
-import BurgerConstructor  from "../burger-constructor/burger-constructor";
 import Modal from "../modal/modal";
 import { useSelector } from "react-redux";
+import HomePage from "../../pages/home";
+import Page404 from "../../pages/page-404";
+import LoginPage from "../../pages/auth/login";
+import RegisterPage from "../../pages/auth/register";
+import ForgotPasswordPage from "../../pages/auth/forgot-password";
+import ResetPasswordPage from "../../pages/auth/reset-password";
+import PageFeed from "../../pages/feed/feed";
+import OrderInfoPage from "../../pages/order-info/order-info";
+import ProfilePage from "../../pages/profile/profile";
+import IngredientDetails from "../ingredient-details/ingredient-details";
 
 function App() {
   const { isOpen } = useSelector(store => store.modal);
@@ -14,16 +21,41 @@ function App() {
   return (
     <>
       <div className={styles.app}>
-        <AppHeader />
-        <main className={`container ${styles.main}`}>
-          <h1 className={`text text_type_main-large mb-2`}>Соберите бургер</h1>
-          <DndProvider backend={HTML5Backend}>
-            <div className={styles.cols}>
-              <BurgerIngredients />
-              <BurgerConstructor />
-            </div>
-          </DndProvider>
-        </main>
+        <Router>
+          <AppHeader />
+          <Switch>
+            <Route path="/" exact={true}>
+              <HomePage />
+            </Route>
+            <Route path="/login" exact={true}>
+              <LoginPage />
+            </Route>
+            <Route path="/register" exact={true}>
+              <RegisterPage />
+            </Route>
+            <Route path="/forgot-password" exact={true}>
+              <ForgotPasswordPage />
+            </Route>
+            <Route path="/reset-password" exact={true}>
+              <ResetPasswordPage />
+            </Route>
+            <Route path="/feed" exact={true}>
+              <PageFeed />
+            </Route>
+            <Route path="/feed/:id" exact={true}>
+              <OrderInfoPage />
+            </Route>
+            <Route path="/profile" exact={true}>
+              <ProfilePage />
+            </Route>
+            <Route path="/ingredients/:id" exact={true}>
+              <IngredientDetails />
+            </Route>
+            <Route>
+              <Page404 />
+            </Route>
+          </Switch>
+        </Router>
       </div>
       {isOpen && <Modal />}
     </>

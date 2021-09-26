@@ -28,21 +28,25 @@ function Ingredient(props) {
     });
   };
 
-  return (
-    <>
-      <div className={`ml-2 mr-2 mb-4 ${isDrag ? style.cardActive : style.card}`} ref={dragRef} onClick={handleIngredientClick} draggable>
-        {!!props.count && <Counter count={props.count} size="small" />}
-        <img
-          src={props.image}
-          alt={`картинка для ${props.name}`}
-          className={"mb-1"} />
-        <div className={`mb-1 ${style.price}`}>
-          <span className={"text text_type_digits-default mr-1"}>{props.price}</span>
-          <CurrencyIcon type="primary" />
+  return React.useMemo(
+    () => (
+      <>
+        <div className={`ml-2 mr-2 mb-4 ${isDrag ? style.cardActive : style.card}`} ref={dragRef} onClick={handleIngredientClick} draggable>
+          {!!props.count && <Counter count={props.count} size="small" />}
+          <img
+            src={props.image}
+            alt={`картинка для ${props.name}`}
+            className={"mb-1"} />
+          <div className={`mb-1 ${style.price}`}>
+            <span className={"text text_type_digits-default mr-1"}>{props.price}</span>
+            <CurrencyIcon type="primary" />
+          </div>
+          <p>{props.name}</p>
         </div>
-        <p>{props.name}</p>
-      </div>
-    </>
+      </>
+    ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [props.count, isDrag]
   )
 }
 

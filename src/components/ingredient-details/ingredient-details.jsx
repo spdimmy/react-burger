@@ -1,15 +1,16 @@
 import React from "react";
-import PropTypes from 'prop-types';
 import style from './ingredient-details.module.css';
+import PropTypes from 'prop-types'
 
 function IngredientDetails({name, calories, proteins, fat, carbohydrates, image_large}) {
   return (
     <>
-      <img src={image_large} alt={name} title={name} className={'mb-4'} />
+      <img src={image_large} alt={name} title={name} className={'mb-4'}/>
       <h3 className="text text_type_main-medium mb-8">
         {name}
       </h3>
-      <p className={'mb-8 text text_type_main-default'}>Превосходные котлеты из марсианской Магнолии для фирменных космических бургеров, набирающих популярность по всей вселенной.</p>
+      <p className={'mb-8 text text_type_main-default'}>Превосходные котлеты из марсианской Магнолии для фирменных
+        космических бургеров, набирающих популярность по всей вселенной.</p>
       <div className={`text text_type_main-default text_color_inactive ${style.composition}`}>
         <div className={'ml-5 mr-5'}>
           <div className={'mb-2'}>Калории,ккал</div>

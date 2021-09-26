@@ -1,0 +1,68 @@
+.wrapper {
+  max-width: 640px;
+  margin: 120px auto 40px;
+}
+
+.number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 64px;
+}
+
+.status {
+  color: var(--colors-interface-success);
+}
+
+.ingredients {
+  max-height: 312px;
+  overflow: auto;
+}
+
+.ingredients::-webkit-scrollbar {
+  width: 8px;
+}
+.ingredients::-webkit-scrollbar-track {
+  background: #2F2F37;
+}
+.ingredients::-webkit-scrollbar-thumb {
+  background: #8585AD;
+}
+
+.ingredient {
+  display: flex;
+  align-items: center;
+}
+
+.image {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  background: var(--background-alt);
+  border-radius: 100px;
+  border: 2px solid #801AB2;
+  overflow: hidden;
+}
+
+.image img {
+  width: auto;
+  height: 56px;
+}
+
+.name {
+  flex-grow: 1;
+}
+
+.bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.price {
+  display: flex;
+  align-items: center;
+}
