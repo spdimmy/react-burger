@@ -3,6 +3,12 @@
   width: calc(50% - var(--offset-base-size) * 4);
   text-align: center;
   cursor: pointer;
+  color: #fff;
+  text-decoration: none;
+}
+
+.card:hover {
+  text-decoration: underline;
 }
 
 .cardActive {

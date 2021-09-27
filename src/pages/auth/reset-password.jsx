@@ -2,12 +2,20 @@ import React, {useState} from 'react';
 import styles from "./auth.module.css";
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link} from "react-router-dom";
+import {resetPassword} from '../../services/actions/auth'
+import { Redirect } from 'react-router-dom';
+import {useDispatch, useSelector} from 'react-redux';
 
 function ResetPasswordPage() {
+  const dispatch = useDispatch();
   const [state, setState] = useState({
     password: '',
-    code: ''
+    token: ''
   });
+
+  const {email} = useSelector(store => ({
+    email: store.auth.email,
+  }));
 
   const handleChange = ({target: {value, name}}) => {
     setState({
@@ -19,8 +27,30 @@ function ResetPasswordPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log(state);
+    dispatch(resetPassword(state));
   };
+
+  if (!email) {
+    return (
+      <Redirect
+        to={{
+          pathname: '/forgot-password'
+        }}
+      />
+    );
+  }
+
+  const hasToken = localStorage.getItem('refreshToken');
+
+  if (hasToken) {
+    return (
+      <Redirect
+        to={{
+          pathname: '/'
+        }}
+      />
+    );
+  }
 
   return (
     <main className={`container`}>
@@ -43,15 +73,15 @@ function ResetPasswordPage() {
               type={'text'}
               placeholder={'Введите код из письма'}
               onChange={handleChange}
-              value={state.code}
-              name={'code'}
+              value={state.token}
+              name={'token'}
               error={false}
               errorText={'Ошибка'}
             />
           </div>
           <div className="mb-20">
             <Button type="primary" size="medium">
-              Сохранить
+              Восстановить
             </Button>
           </div>
         </form>

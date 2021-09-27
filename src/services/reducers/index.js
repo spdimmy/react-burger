@@ -4,9 +4,11 @@ import {
   orderReducer,
   modalReducer
 } from './burger';
+import { authReducer } from "./auth";
 
 export const rootReducer = combineReducers({
   ingredients: ingredientsReducer,
   order: orderReducer,
-  modal: modalReducer
+  modal: modalReducer,
+  auth: authReducer,
 });

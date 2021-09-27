@@ -2,8 +2,12 @@ import React, {useState} from 'react';
 import styles from "./auth.module.css";
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import {Link} from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import { registerUser } from '../../services/actions/auth';
 
 function RegisterPage() {
+  const dispatch = useDispatch();
   const [state, setState] = useState({
     name: '',
     email: '',
@@ -24,8 +28,20 @@ function RegisterPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log(state);
+    dispatch(registerUser(state));
   };
+
+  const hasToken = localStorage.getItem('refreshToken');
+
+  if (hasToken) {
+    return (
+      <Redirect
+        to={{
+          pathname: '/'
+        }}
+      />
+    );
+  }
 
   return (
     <main className={`container`}>

@@ -1,11 +1,13 @@
 import React, {useState} from 'react';
 import styles from "./auth.module.css";
 import {Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
-import {Link, useHistory} from "react-router-dom";
+import {Link} from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import { forgotPassword } from '../../services/actions/auth'
 
 function ForgotPasswordPage() {
-  const history = useHistory();
-
+  const dispatch = useDispatch();
   const [state, setState] = useState({
     email: '',
   });
@@ -20,10 +22,20 @@ function ForgotPasswordPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log(state);
-
-    history.replace({pathname: '/reset-password'})
+    dispatch(forgotPassword(state));
   };
+
+  const hasToken = localStorage.getItem('refreshToken');
+
+  if (hasToken) {
+    return (
+      <Redirect
+        to={{
+          pathname: '/'
+        }}
+      />
+    );
+  }
 
   return (
     <main className={`container`}>

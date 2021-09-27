@@ -14,6 +14,7 @@ import PageFeed from "../../pages/feed/feed";
 import OrderInfoPage from "../../pages/order-info/order-info";
 import ProfilePage from "../../pages/profile/profile";
 import IngredientDetails from "../ingredient-details/ingredient-details";
+import { ProtectedRoute } from '../protected-route/protected-route';
 
 function App() {
   const { isOpen } = useSelector(store => store.modal);
@@ -45,9 +46,9 @@ function App() {
             <Route path="/feed/:id" exact={true}>
               <OrderInfoPage />
             </Route>
-            <Route path="/profile" exact={true}>
+            <ProtectedRoute path="/profile" exact={true}>
               <ProfilePage />
-            </Route>
+            </ProtectedRoute>
             <Route path="/ingredients/:id" exact={true}>
               <IngredientDetails />
             </Route>

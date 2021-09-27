@@ -1,9 +1,15 @@
 import React, {useState} from 'react';
 import styles from './auth.module.css';
 import { Input, Button } from "@ya.praktikum/react-developer-burger-ui-components";
-import {Link} from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useDispatch } from 'react-redux';
+import { Redirect } from 'react-router-dom';
+import {loginUser} from "../../services/actions/auth";
 
 function LoginPage() {
+  const dispatch = useDispatch();
+  const { history } = useLocation();
+
   const [state, setState] = useState({
     email: '',
     password: ''
@@ -23,8 +29,18 @@ function LoginPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    console.log(state);
+    dispatch(loginUser(state));
   };
+
+  const hasToken = localStorage.getItem('refreshToken');
+
+  if (hasToken) {
+    return (
+      <Redirect
+        to={ history?.from || '/' }
+      />
+    );
+  }
 
   return (
     <main className={`container`}>

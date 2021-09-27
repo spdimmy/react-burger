@@ -1,14 +1,11 @@
 import React from "react";
-import { OPEN_MODAL } from '../../services/actions/burger';
-import { useDispatch } from "react-redux";
 import PropTypes from 'prop-types';
 import { Counter, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import style from './ingredient.module.css';
-import IngredientDetails from "../ingredient-details/ingredient-details";
 import {useDrag} from "react-dnd";
+import {Link} from "react-router-dom";
 
 function Ingredient(props) {
-  const dispatch = useDispatch();
   const [{isDrag}, dragRef] = useDrag({
     type: "all",
     item: {
@@ -20,18 +17,12 @@ function Ingredient(props) {
     })
   });
 
-  const handleIngredientClick = () => {
-    dispatch({
-      type: OPEN_MODAL,
-      header: 'Детали ингредиента',
-      content: <IngredientDetails {...props} />,
-    });
-  };
-
   return React.useMemo(
     () => (
       <>
-        <div className={`ml-2 mr-2 mb-4 ${isDrag ? style.cardActive : style.card}`} ref={dragRef} onClick={handleIngredientClick} draggable>
+        <Link to={{
+          pathname: `/ingredients/${props._id}`,
+        }} className={`ml-2 mr-2 mb-4 ${isDrag ? style.cardActive : style.card}`} ref={dragRef} draggable>
           {!!props.count && <Counter count={props.count} size="small" />}
           <img
             src={props.image}
@@ -42,7 +33,7 @@ function Ingredient(props) {
             <CurrencyIcon type="primary" />
           </div>
           <p>{props.name}</p>
-        </div>
+        </Link>
       </>
     ),
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -4,3 +4,10 @@
   margin-left: calc((var(--offset-base-size) * 5) * -1);
   margin-right: calc((var(--offset-base-size) * 5) * -1);
 }
+
+.wrapper {
+  max-width: 720px;
+  width: 100%;
+  margin: auto;
+  text-align: center;
+}
