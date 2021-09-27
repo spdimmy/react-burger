@@ -1,4 +1,5 @@
 import {setCookie, getCookie, deleteCookie} from '../../utils/cookie'
+import { push } from 'connected-react-router';
 
 export const REGISTER_REQUEST = "REGISTER_REQUEST";
 export const REGISTER_SUCCESS = "REGISTER_SUCCESS";
@@ -59,6 +60,7 @@ export const registerUser = (value) => (dispatch) => {
       type: REGISTER_SUCCESS,
       payload: e.user,
     });
+    dispatch(push('/'));
   }).catch(e => {
     dispatch({
       type: REGISTER_FAILED,
@@ -89,6 +91,7 @@ export const forgotPassword = (value) => (dispatch) => {
       type: FORGOT_SUCCESS,
       payload: value
     });
+    dispatch(push('/reset-password'));
   }).catch(e => {
     dispatch({
       type: FORGOT_FAILED,
@@ -149,6 +152,7 @@ export const logoutUser = (value) => (dispatch) => {
     dispatch({
       type: LOGOUT_SUCCESS,
     });
+    dispatch(push('/login'));
   }).catch(e => {
     dispatch({
       type: LOGOUT_FAILED,
@@ -156,7 +160,7 @@ export const logoutUser = (value) => (dispatch) => {
   })
 };
 
-export const loginUser = (value) => (dispatch) => {
+export const loginUser = ({value, path}) => (dispatch) => {
   dispatch({
     type: LOGOUT_REQUEST,
   });
@@ -183,7 +187,7 @@ export const loginUser = (value) => (dispatch) => {
       type: LOGIN_SUCCESS,
       payload: e.user,
     });
-
+    dispatch(push(path));
   }).catch(() => {
     dispatch({
       type: LOGIN_FAILED,
@@ -253,7 +257,7 @@ export const userData = (value) => (dispatch) => {
     });
     deleteCookie('token');
     localStorage.removeItem('refreshToken');
-
+    dispatch(push('/login'));
   })
 };
 

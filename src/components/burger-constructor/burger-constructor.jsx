@@ -5,6 +5,7 @@ import SelectedItem from "../selected-item/selected-item";
 import {useDispatch, useSelector} from "react-redux";
 import {ADD_INGREDIENT, getOrder, OPEN_MODAL} from "../../services/actions/burger";
 import {useDrop} from "react-dnd";
+import { push } from 'connected-react-router';
 
 function BurgerConstructor() {
   const dispatch = useDispatch();
@@ -26,14 +27,19 @@ function BurgerConstructor() {
   const bunIngredient = activeIngredients.find(item => item.type === "bun");
   const otherIngredients = activeIngredients.filter(item => item.type !== "bun");
   const sumPrice = activeIngredients.reduce((acc, curr) => curr.type === "bun" ? acc + curr.price * 2 : acc + curr.price, 0);
+  const token = localStorage.getItem('refreshToken');
 
   const openModalWithContent = () => {
-    const activeIngredientsIds = activeIngredients.map(ingredient => ingredient._id);
+    if (!token) {
+      dispatch(push('/login'));
+    } else {
+      const activeIngredientsIds = activeIngredients.map(ingredient => ingredient._id);
 
-    // Prevent submit order without order
-    bunIngredient
-     ? dispatch(getOrder(activeIngredientsIds))
-     : dispatch({type: OPEN_MODAL, content: <h2>Хлеб - всему голова, выберите булочку</h2>});
+      // Prevent submit order without order
+      bunIngredient
+        ? dispatch(getOrder(activeIngredientsIds))
+        : dispatch({type: OPEN_MODAL, content: <h2>Хлеб - всему голова, выберите булочку</h2>});
+    }
   };
 
   const wrapperClass = `

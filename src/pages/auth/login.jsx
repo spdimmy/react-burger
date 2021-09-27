@@ -9,6 +9,7 @@ import {loginUser} from "../../services/actions/auth";
 function LoginPage() {
   const dispatch = useDispatch();
   const { history } = useLocation();
+  const path =  history?.from.pathname || '/';
 
   const [state, setState] = useState({
     email: '',
@@ -29,7 +30,7 @@ function LoginPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    dispatch(loginUser(state));
+    dispatch(loginUser({state, path}));
   };
 
   const hasToken = localStorage.getItem('refreshToken');
