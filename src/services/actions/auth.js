@@ -259,6 +259,12 @@ export const userData = (value) => (dispatch) => {
 
     if (e.message === "jwt expired") {
       refreshToken(() => userData());
+    } else {
+      deleteCookie('token');
+      localStorage.removeItem('refreshToken');
+      dispatch({
+        type: REFRESH_FAILED,
+      });
     }
   })
 };
