@@ -195,7 +195,7 @@ export const loginUser = ({value, path}) => (dispatch) => {
   })
 };
 
-export const refreshToken = (value) => (dispatch) => {
+export const refreshToken = (updateData) => (dispatch) => {
   dispatch({
     type: REFRESH_REQUEST,
   });
@@ -221,6 +221,7 @@ export const refreshToken = (value) => (dispatch) => {
     dispatch({
       type: REFRESH_SUCCESS,
     });
+    if (updateData) updateData()
   }).catch(() => {
     deleteCookie('token');
     localStorage.removeItem('refreshToken');
@@ -255,9 +256,10 @@ export const userData = (value) => (dispatch) => {
     dispatch({
       type: USERDATA_FAILED,
     });
-    deleteCookie('token');
-    localStorage.removeItem('refreshToken');
-    dispatch(push('/login'));
+
+    if (e.message === "jwt expired") {
+      refreshToken(() => userData());
+    }
   })
 };
 
@@ -288,6 +290,9 @@ export const userDataUpdate = (value) => (dispatch) => {
     dispatch({
       type: USERDATAUPDATE_FAILED,
     });
-    refreshToken()
+
+    if (e.message === "jwt expired") {
+      refreshToken(() => userDataUpdate(value));
+    }
   })
 };
