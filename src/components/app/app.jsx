@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Switch, Route, useHistory, useLocation } from 'react-router-dom';
 import styles from './app.module.css';
 import AppHeader from "../app-header/app-header";
@@ -16,6 +16,7 @@ import ProfilePage from "../../pages/profile/profile";
 import IngredientDetails from "../ingredient-details/ingredient-details";
 import { ProtectedRoute } from '../protected-route/protected-route';
 import { push } from 'connected-react-router';
+import {getIngredients} from "../../services/actions/burger";
 
 function App() {
   const { isOpen } = useSelector(store => store.modal);
@@ -24,7 +25,9 @@ function App() {
   const dispatch = useDispatch();
   const background = (history.action === 'PUSH' || history.action === 'REPLACE') && location.state && location.state.background;
 
-  console.log(background);
+  useEffect(() => {
+    dispatch(getIngredients());
+  }, [dispatch]);
 
   return (
     <>

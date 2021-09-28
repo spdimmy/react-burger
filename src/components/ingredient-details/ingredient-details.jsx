@@ -3,24 +3,14 @@ import style from './ingredient-details.module.css';
 import PropTypes from 'prop-types'
 import {useSelector, shallowEqual} from 'react-redux';
 import {useParams} from 'react-router-dom'
-import {useDispatch} from 'react-redux';
-import {useEffect} from 'react';
-import {getIngredients} from '../../services/actions/burger';
 
 function IngredientDetails() {
-  const dispatch = useDispatch();
-  const {ingredients} = useSelector(store => store.ingredients, shallowEqual);
+  const {ingredients, ingredientsRequest, ingredientsFailed} = useSelector(store => store.ingredients, shallowEqual);
   const {id} = useParams();
   const props = ingredients.find(e => e._id === id);
 
-  useEffect(() => {
-    if (!props) {
-      dispatch(getIngredients());
-    }
-  }, [id, dispatch]);
-
   return (
-    ingredients.length &&
+    ingredients.length && !ingredientsRequest && !ingredientsFailed ?
     <div className={style.wrapper}>
       <h2>Детали ингредиента</h2>
       <img src={props.image_large} alt={props.name} title={props.name} className={'mb-4'}/>
@@ -45,7 +35,7 @@ function IngredientDetails() {
           <div>{props.carbohydrates}</div>
         </div>
       </div>
-    </div>
+    </div> : <h1>Loading</h1>
   )
 }
 

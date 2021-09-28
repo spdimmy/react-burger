@@ -1,9 +1,8 @@
-import React, {useEffect} from "react";
+import React from "react";
 import styles from "./order-info.module.css";
 import cn from "classnames";
 import {CurrencyIcon} from "@ya.praktikum/react-developer-burger-ui-components";
-import {useDispatch, useSelector} from "react-redux";
-import {getIngredients} from "../../services/actions/burger";
+import {useSelector} from "react-redux";
 
 let data = {
   number: '#034535',
@@ -18,12 +17,6 @@ let {number, date, status, name, price} = data;
 
 function OrderInfoPage() {
   const {ingredients} = useSelector(store => store.ingredients);
-  const dispatch = useDispatch();
-
-  // Temp
-  useEffect(() => {
-    dispatch(getIngredients());
-  }, [dispatch]);
 
   return (
     <main className={`container`}>
