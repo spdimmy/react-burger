@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import { Counter, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import style from './ingredient.module.css';
 import {useDrag} from "react-dnd";
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 
 function Ingredient(props) {
+  const location = useLocation();
+
   const [{isDrag}, dragRef] = useDrag({
     type: "all",
     item: {
@@ -22,6 +24,7 @@ function Ingredient(props) {
       <>
         <Link to={{
           pathname: `/ingredients/${props._id}`,
+          state: { background: location }
         }} className={`ml-2 mr-2 mb-4 ${isDrag ? style.cardActive : style.card}`} ref={dragRef} draggable>
           {!!props.count && <Counter count={props.count} size="small" />}
           <img
