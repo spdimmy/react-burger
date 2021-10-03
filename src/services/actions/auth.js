@@ -221,7 +221,7 @@ export const refreshToken = (updateData) => (dispatch) => {
     dispatch({
       type: REFRESH_SUCCESS,
     });
-    if (updateData) updateData()
+    if (updateData) dispatch(updateData)
   }).catch(() => {
     deleteCookie('token');
     localStorage.removeItem('refreshToken');
@@ -258,7 +258,7 @@ export const userData = (value) => (dispatch) => {
     });
 
     if (e.message === "jwt expired") {
-      refreshToken(() => userData());
+      dispatch(refreshToken(userData()));
     } else {
       deleteCookie('token');
       localStorage.removeItem('refreshToken');
@@ -298,7 +298,7 @@ export const userDataUpdate = (value) => (dispatch) => {
     });
 
     if (e.message === "jwt expired") {
-      refreshToken(() => userDataUpdate(value));
+      dispatch(refreshToken(userDataUpdate(value)));
     }
   })
 };
