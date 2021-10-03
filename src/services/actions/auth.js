@@ -160,7 +160,7 @@ export const logoutUser = (value) => (dispatch) => {
   })
 };
 
-export const loginUser = ({value, path}) => (dispatch) => {
+export const loginUser = ({state, path}) => (dispatch) => {
   dispatch({
     type: LOGOUT_REQUEST,
   });
@@ -172,7 +172,7 @@ export const loginUser = ({value, path}) => (dispatch) => {
     mode: 'cors',
     cache: 'no-cache',
     credentials: 'same-origin',
-    body: JSON.stringify(value)
+    body: JSON.stringify(state)
   }).then(e => {
     if (e.ok) {
       return e.json();
