@@ -19,7 +19,7 @@ export const GET_ORDER_FAILED = 'GET_ORDER_FAILED';
 export const UPDATE_CONSTRUCTOR_ORDER = 'UPDATE_CONSTRUCTOR_ORDER';
 
 export function getIngredients() {
-  return function(dispatch) {
+  return function (dispatch) {
     dispatch({
       type: GET_INGREDIENTS_REQUEST
     });
@@ -55,7 +55,7 @@ export function getIngredients() {
 }
 
 export function getOrder(activeIngredientsIds) {
-  return function(dispatch) {
+  return function (dispatch) {
     dispatch({
       type: GET_ORDER_REQUEST
     });
@@ -90,10 +90,10 @@ export function getOrder(activeIngredientsIds) {
         dispatch({
           type: OPEN_MODAL,
           header: '',
-          content: <OrderDetails order={data.order.number} />,
+          content: <OrderDetails order={data.order.number}/>,
         });
       });
-    } catch(error) {
+    } catch (error) {
       dispatch({
         type: GET_ORDER_FAILED
       });

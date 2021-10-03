@@ -1,31 +1,78 @@
-import React from 'react';
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
+import React, {useEffect} from 'react';
+import { Switch, Route, useHistory, useLocation } from 'react-router-dom';
 import styles from './app.module.css';
 import AppHeader from "../app-header/app-header";
-import BurgerIngredients from "../burger-ingredients/burger-ingredients";
-import BurgerConstructor  from "../burger-constructor/burger-constructor";
 import Modal from "../modal/modal";
-import { useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import HomePage from "../../pages/home";
+import Page404 from "../../pages/page-404";
+import LoginPage from "../../pages/auth/login";
+import RegisterPage from "../../pages/auth/register";
+import ForgotPasswordPage from "../../pages/auth/forgot-password";
+import ResetPasswordPage from "../../pages/auth/reset-password";
+import PageFeed from "../../pages/feed/feed";
+import OrderInfoPage from "../../pages/order-info/order-info";
+import ProfilePage from "../../pages/profile/profile";
+import IngredientDetails from "../ingredient-details/ingredient-details";
+import { ProtectedRoute } from '../protected-route/protected-route';
+import { push } from 'connected-react-router';
+import {getIngredients} from "../../services/actions/burger";
 
 function App() {
   const { isOpen } = useSelector(store => store.modal);
+  const location = useLocation();
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const background = (history.action === 'PUSH' || history.action === 'REPLACE') && location.state && location.state.background;
+
+  useEffect(() => {
+    dispatch(getIngredients());
+  }, [dispatch]);
 
   return (
     <>
       <div className={styles.app}>
         <AppHeader />
-        <main className={`container ${styles.main}`}>
-          <h1 className={`text text_type_main-large mb-2`}>Соберите бургер</h1>
-          <DndProvider backend={HTML5Backend}>
-            <div className={styles.cols}>
-              <BurgerIngredients />
-              <BurgerConstructor />
-            </div>
-          </DndProvider>
-        </main>
+        <Switch location={background || location}>
+          <Route path="/" exact={true}>
+            <HomePage />
+          </Route>
+          <Route path="/login" exact={true}>
+            <LoginPage />
+          </Route>
+          <Route path="/register" exact={true}>
+            <RegisterPage />
+          </Route>
+          <Route path="/forgot-password" exact={true}>
+            <ForgotPasswordPage />
+          </Route>
+          <Route path="/reset-password" exact={true}>
+            <ResetPasswordPage />
+          </Route>
+          <Route path="/feed" exact={true}>
+            <PageFeed />
+          </Route>
+          <Route path="/feed/:id" exact={true}>
+            <OrderInfoPage />
+          </Route>
+          <ProtectedRoute path="/profile" exact={true}>
+            <ProfilePage />
+          </ProtectedRoute>
+          <Route path="/ingredients/:id" exact={true}>
+            <IngredientDetails />
+          </Route>
+          <Route>
+            <Page404 />
+          </Route>
+        </Switch>
       </div>
       {isOpen && <Modal />}
+      {background &&
+      (<>
+        <Route path='/ingredients/:id'>
+          <Modal closeModal={() => {dispatch(push('/'))}}><IngredientDetails/></Modal>
+        </Route>
+      </>)}
     </>
   );
 }

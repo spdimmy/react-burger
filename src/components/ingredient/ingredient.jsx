@@ -1,14 +1,13 @@
 import React from "react";
-import { OPEN_MODAL } from '../../services/actions/burger';
-import { useDispatch } from "react-redux";
 import PropTypes from 'prop-types';
 import { Counter, CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import style from './ingredient.module.css';
-import IngredientDetails from "../ingredient-details/ingredient-details";
 import {useDrag} from "react-dnd";
+import {Link, useLocation} from "react-router-dom";
 
 function Ingredient(props) {
-  const dispatch = useDispatch();
+  const location = useLocation();
+
   const [{isDrag}, dragRef] = useDrag({
     type: "all",
     item: {
@@ -20,29 +19,28 @@ function Ingredient(props) {
     })
   });
 
-  const handleIngredientClick = () => {
-    dispatch({
-      type: OPEN_MODAL,
-      header: 'Детали ингредиента',
-      content: <IngredientDetails {...props} />,
-    });
-  };
-
-  return (
-    <>
-      <div className={`ml-2 mr-2 mb-4 ${isDrag ? style.cardActive : style.card}`} ref={dragRef} onClick={handleIngredientClick} draggable>
-        {!!props.count && <Counter count={props.count} size="small" />}
-        <img
-          src={props.image}
-          alt={`картинка для ${props.name}`}
-          className={"mb-1"} />
-        <div className={`mb-1 ${style.price}`}>
-          <span className={"text text_type_digits-default mr-1"}>{props.price}</span>
-          <CurrencyIcon type="primary" />
-        </div>
-        <p>{props.name}</p>
-      </div>
-    </>
+  return React.useMemo(
+    () => (
+      <>
+        <Link to={{
+          pathname: `/ingredients/${props._id}`,
+          state: { background: location }
+        }} className={`ml-2 mr-2 mb-4 ${isDrag ? style.cardActive : style.card}`} ref={dragRef} draggable>
+          {!!props.count && <Counter count={props.count} size="small" />}
+          <img
+            src={props.image}
+            alt={`картинка для ${props.name}`}
+            className={"mb-1"} />
+          <div className={`mb-1 ${style.price}`}>
+            <span className={"text text_type_digits-default mr-1"}>{props.price}</span>
+            <CurrencyIcon type="primary" />
+          </div>
+          <p>{props.name}</p>
+        </Link>
+      </>
+    ),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [props.count, isDrag]
   )
 }
 

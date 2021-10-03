@@ -1,0 +1,77 @@
+.card {
+  display: grid;
+  grid-template-areas: "number date date"
+                       "name name name"
+                       "ingredients ingredients price";
+  grid-template-columns: 1fr auto min-content;
+  grid-gap: calc(var(--offset-base-size) * 6);
+  background: var(--background);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.04),
+              0 0 2px rgba(0, 0, 0, 0.06),
+              0 0 1px rgba(0, 0, 0, 0.04);
+  border-radius: var(--common-border-radius-s);
+  color: inherit;
+  text-decoration: none;
+}
+
+.number {
+  grid-area: number;
+}
+
+.date {
+  grid-area: date;
+}
+
+.status {
+  grid-area: status;
+}
+
+.name {
+  grid-area: name;
+}
+
+.ingredients {
+  grid-area: ingredients;
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 16px;
+  margin-left: 16px;
+}
+
+.ingredient {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  margin-top: -16px;
+  margin-left: -16px;
+  background: var(--background-alt);
+  border-radius: 100px;
+  border: 2px solid #801AB2;
+  overflow: hidden;
+}
+
+.ingredient img {
+  width: auto;
+  height: 56px;
+}
+
+.price {
+  grid-area: price;
+  align-self: center;
+  display: flex;
+  align-items: center;
+}
+
+.hidden .ingredient:nth-child(n + 6):not(:last-child) {
+  display: none;
+}
+
+.expand {
+  composes: ingredient;
+  opacity: 0.6;
+  cursor: pointer;
+}
+

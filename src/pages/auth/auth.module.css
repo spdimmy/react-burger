@@ -1,0 +1,11 @@
+.wrapper {
+  max-width: 480px;
+  margin: 180px auto 40px;
+  text-align: center;
+}
+
+.link {
+  margin-left: calc(var(--offset-base-size)  * 2);
+  color: var(--colors-interface-accent);
+  text-decoration: none;
+}

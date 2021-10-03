@@ -1,13 +1,11 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useRef, useState} from "react";
 import styles from  './burger-ingredients.module.css';
 import Tabs from "../tabs/tabs";
 import Ingredients from "../ingredients/ingredients";
-import { getIngredients } from  '../../services/actions/burger';
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 function BurgerIngredients() {
   const {ingredients, ingredientsRequest} = useSelector(store => store.ingredients);
-  const dispatch = useDispatch();
   const wrapperRef = useRef(null);
   const childRef = useRef([]);
   const [current, setCurrent] = useState('Булки');
@@ -52,10 +50,6 @@ function BurgerIngredients() {
     section.scrollIntoView({block: "start", behavior: "smooth"});
     setCurrent(tab);
   }
-
-  useEffect(() => {
-    dispatch(getIngredients());
-  }, [dispatch]);
 
   ingredients.forEach(el => {
     let existingSection = sections.find(section => section.type === el.type);
